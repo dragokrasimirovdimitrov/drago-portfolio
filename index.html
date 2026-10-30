@@ -357,7 +357,7 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
 </section>
 
 <section class="light wrap" id="work">
-  <div class="sh rv"><div><div class="num mute">// 01</div><h2>Selected work</h2></div><div class="bg mute">Избрани проекти</div></div>
+  <div class="sh rv"><div><div class="num mute">// 01</div><h2>Selected work</h2></div><div class="bg mute">Case studies</div></div>
   <div class="tabs rv" role="tablist">
     <button class="tab on" data-f="all">All</button>
     <button class="tab" data-f="ecom">E-commerce</button>
@@ -401,7 +401,7 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
 </section>
 
 <section class="dark wrap" id="expertise">
-  <div class="sh rv"><div><div class="num mute">// 02</div><h2>Expertise</h2></div><div class="bg mute">Експертиза</div></div>
+  <div class="sh rv"><div><div class="num mute">// 02</div><h2>Expertise</h2></div><div class="bg mute">What I do</div></div>
   <div class="row rv"><span class="mute">01</span><h3>UX Leadership</h3><div><p>Leading and mentoring UX designers and researchers, planning resources and keeping delivery on time and in scope.</p><small class="mute">Team lead · Workshops · Estimation &amp; risk</small></div></div>
   <div class="row rv"><span class="mute">02</span><h3>Research &amp; UX Audits</h3><div><p>Heuristic reviews, competitor analysis and requirements workshops that turn opinions into priorities.</p><small class="mute">UX audits · Client workshops · User flows</small></div></div>
   <div class="row rv"><span class="mute">03</span><h3>E-commerce &amp; Checkout</h3><div><p>End-to-end flows for product discovery, booking and checkout — designed to convert.</p><small class="mute">PLP / PDP · Checkout · Loyalty</small></div></div>
@@ -410,7 +410,7 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
 </section>
 
 <section class="light wrap" id="ai">
-  <div class="sh rv"><div><div class="num mute">// 03</div><h2>AI × UX</h2></div><div class="bg mute">Изкуствен интелект</div></div>
+  <div class="sh rv"><div><div class="num mute">// 03</div><h2>AI × UX</h2></div><div class="bg mute">Artificial intelligence</div></div>
   <div class="ai-top rv">
     <p class="ai-lead">AI is my co-pilot,<br>not my autopilot.</p>
     <p class="mute ai-text">I use AI to move faster through the repetitive parts of UX — synthesis, audits, first drafts and prototypes — so more time goes into what still needs a human: judgement, empathy and the hard trade-offs.</p>
@@ -445,7 +445,7 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
 </section>
 
 <section class="dark wrap" id="experience">
-  <div class="sh rv"><div><div class="num mute">// 04</div><h2>Experience</h2></div><div class="bg mute">Опит</div></div>
+  <div class="sh rv"><div><div class="num mute">// 04</div><h2>Experience</h2></div><div class="bg mute">Career</div></div>
   <div class="row xp rv"><span class="mute">2024 — Present</span><div><h3>Astound Commerce</h3><div class="mute">UX Design Team Lead · Varna</div></div><ul><li>Lead and mentor a team of UX designers and researchers</li><li>Own UX strategy across multiple client projects</li><li>Run workshops, estimations and process improvements</li></ul></div>
   <div class="row xp rv"><span class="mute">2019 — 2024</span><div><h3>Astound Commerce</h3><div class="mute">Sr. UX Designer (Projects Lead)</div></div><ul><li>Research, wireframes and hi-fi prototypes for global e-commerce brands</li><li>Client-facing requirements workshops and UX audits</li></ul></div>
   <div class="row xp rv"><span class="mute">2018 — 2019</span><div><h3>Glenhawk</h3><div class="mute">Sr. UX Designer · London</div></div><ul><li>Interfaces for a large-scale internal financial platform</li><li>Thousands of hi-fi prototypes built on an atomic design system</li></ul></div>
@@ -459,7 +459,7 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
 </section>
 
 <section class="dark wrap" id="industries">
-  <div class="sh rv"><div><div class="num mute">// 05</div><h2>Industries</h2></div><div class="bg mute">Индустрии</div></div>
+  <div class="sh rv"><div><div class="num mute">// 05</div><h2>Industries</h2></div><div class="bg mute">Sectors</div></div>
   <div class="inds rv">
     <div><span class="cap mute">01</span><b>E-commerce &amp; Retail</b></div>
     <div><span class="cap mute">02</span><b>Fashion &amp; Luxury</b></div>
@@ -479,7 +479,7 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
   <div class="about">
     <img class="rv" src="portrait3.jpg" alt="Drago Dimitrov">
     <div class="ab rv">
-      <div class="ab-top"><span class="num mute">// 06</span><span class="bg mute">За мен</span></div>
+      <div class="ab-top"><span class="num mute">// 06</span><span class="bg mute">About me</span></div>
       <h2>Hi, I'm Drago.</h2>
       <p>UX Design Team Lead at Astound Commerce, based in Varna, Bulgaria. For me UX isn't only work — it's a way of thinking. Every project is a chance to learn something new and to improve things for the people who use them.</p>
       <p>I care about precision, quality execution and teams where responsibility is shared.</p>
@@ -565,11 +565,11 @@ function renderProject(p){const idx=P.indexOf(p),nx=P[(idx+1)%P.length];let n=0,
   dark=false; // hero is dark, first section light
   h+=`<section class="pv-hero"><img class="bg" src="${p.cover}" alt=""><a class="pv-back" href="#projects">← All projects</a><img class="pv-logo" src="${p.logo}" alt="${esc(p.client)} logo"><h1>${esc(p.title||p.client)}</h1>${p.tagline?`<p class="tl">${esc(p.tagline)}</p>`:''}${p.meta?`<div class="pv-meta">${Object.entries(p.meta).map(([k,v])=>`<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>`:''}</section>`;
   const st=[['Challenge',p.challenge],['Approach',p.approach],['Outcome',p.outcome]].filter(x=>x[1]);
-  if(st.length)h+=sec(sh(String(++n).padStart(2,'0'),'The story','История')+`<div class="pv-story rv" style="--n:${st.length}">${st.map(([k,v])=>`<div><span class="cap mute">${k.toUpperCase()}</span><p>${esc(v)}</p></div>`).join('')}</div>`);
-  if(p.highlights&&p.highlights.length)h+=sec(sh(String(++n).padStart(2,'0'),'What I did','Какво направих')+`<div class="pv-hl">${p.highlights.map((x,i)=>`<div class="row rv"${i===p.highlights.length-1?` style="border-bottom:1px solid var(--line-${dark?'d':'l'})"`:''}><span class="mute">0${i+1}</span><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></div>`).join('')}</div>`);
+  if(st.length)h+=sec(sh(String(++n).padStart(2,'0'),'The story','Overview')+`<div class="pv-story rv" style="--n:${st.length}">${st.map(([k,v])=>`<div><span class="cap mute">${k.toUpperCase()}</span><p>${esc(v)}</p></div>`).join('')}</div>`);
+  if(p.highlights&&p.highlights.length)h+=sec(sh(String(++n).padStart(2,'0'),'What I did','My contribution')+`<div class="pv-hl">${p.highlights.map((x,i)=>`<div class="row rv"${i===p.highlights.length-1?` style="border-bottom:1px solid var(--line-${dark?'d':'l'})"`:''}><span class="mute">0${i+1}</span><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></div>`).join('')}</div>`);
   if(p.stats&&p.stats.length)h+=sec(`<div class="pv-stats rv" style="--n:${p.stats.length}">${p.stats.map(x=>`<div><b>${esc(x[0])}</b><span class="mute">${esc(x[1])}</span></div>`).join('')}</div>`);
-  if(p.process&&p.process.length)h+=sec(sh(String(++n).padStart(2,'0'),'Process','Процес')+`<div class="pv-proc rv">${p.process.map(x=>`<span>${esc(x)}</span>`).join('<i>→</i>')}</div>`);
-  if(p.gallery&&p.gallery.length)h+=sec(sh(String(++n).padStart(2,'0'),'The work','Работата')+`<div class="gal">${gallery(p.gallery)}</div>`);
+  if(p.process&&p.process.length)h+=sec(sh(String(++n).padStart(2,'0'),'Process','How we got there')+`<div class="pv-proc rv">${p.process.map(x=>`<span>${esc(x)}</span>`).join('<i>→</i>')}</div>`);
+  if(p.gallery&&p.gallery.length)h+=sec(sh(String(++n).padStart(2,'0'),'The work','Selected visuals')+`<div class="gal">${gallery(p.gallery)}</div>`);
   else h+=sec(`<p class="lite-note rv">Visuals for this project are under NDA — happy to walk through the work in person.</p>`);
   h+=`<a class="pv-next" href="#${nx.slug}"><img src="${nx.cover}" alt=""><div><span class="cap" style="opacity:.7">NEXT PROJECT →</span><h2>${esc(nx.client)}</h2></div></a>`;
   return h}
