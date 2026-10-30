@@ -39,6 +39,7 @@ a{color:inherit}
 /* hero */
 .hero{position:relative;height:100vh;min-height:640px;overflow:hidden;color:#fff}
 .hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gaze{position:absolute;z-index:0;pointer-events:none;opacity:0;transition:opacity .25s}.gaze.on{opacity:1}.gaze img{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .16s linear}.gaze img.a{opacity:1}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 45%,rgba(0,0,0,.78) 100%)}
 .intro{position:absolute;z-index:2;left:var(--pad);right:var(--pad);bottom:88px}
 .eyebrow{font-size:22px;font-weight:500;opacity:.85}
@@ -376,6 +377,7 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
 <section class="hero" id="top">
   <img class="poster" src="poster.jpg" alt="">
   <video id="heroVid" src="hero_once2.mp4" poster="poster.jpg" autoplay playsinline preload="auto"></video>
+  <div class="gaze" id="gaze" aria-hidden="true"></div>
   <div class="intro">
     <div class="eyebrow">ux design lead / product designer</div>
     <h1 class="name" aria-label="Dragomir Dimitrov"><span class="roll" data-a="Dragomir Dimitrov" data-b="Drago The UX">Dragomir Dimitrov</span></h1>
@@ -587,6 +589,19 @@ bP.onclick=()=>{if(v.ended){userPaused=false;v.currentTime=0;v.play()}else if(v.
 bS.onclick=()=>{v.muted=!v.muted;userMuted=v.muted;if(!v.muted&&v.paused&&!userPaused&&!v.ended)v.play();ui()};
 // pause when hero is off-screen, resume when back (unless user paused)
 new IntersectionObserver(([e])=>{if(!e.isIntersecting)v.pause();else if(!userPaused&&!v.ended)v.play().catch(()=>{})},{threshold:.25}).observe(hero);
+
+/* gaze follows cursor after hero video ends */
+(()=>{const g=document.getElementById('gaze'),hero=document.querySelector('.hero');if(!g)return;
+const K=['ul','u','ur','l','c','r','dl','d','dr'],im={};K.forEach(k=>{const i=new Image();i.src='gaze/g_'+k+'.jpg';i.alt='';g.appendChild(i);im[k]=i});
+let cur='c';im.c.classList.add('a');let geo={x:0,y:0,s:1};
+const place=()=>{const W=hero.clientWidth,H=hero.clientHeight,s=Math.max(W/1920,H/1080),ox=(W-1920*s)/2,oy=(H-1080*s)/2;
+g.style.left=(ox+660*s)+'px';g.style.top=(oy)+'px';g.style.width=g.style.height=(600*s)+'px';const r=hero.getBoundingClientRect();geo={x:r.left+ox+960*s,y:r.top+oy+140*s,s}};
+const set=k=>{if(k===cur)return;im[cur].classList.remove('a');im[k].classList.add('a');cur=k};
+const show=on=>{g.classList.toggle('on',on);if(!on)set('c');place()};
+v.addEventListener('ended',()=>show(true));v.addEventListener('play',()=>show(false));addEventListener('resize',place);addEventListener('scroll',place,{passive:true});
+addEventListener('pointermove',e=>{if(!g.classList.contains('on'))return;const dx=e.clientX-geo.x,dy=e.clientY-geo.y,tx=Math.max(120,innerWidth*.12),ty=Math.max(90,innerHeight*.12);
+const col=dx<-tx?0:dx>tx?2:1,ry=e.clientY/innerHeight,row=ry<.22?0:ry>.72?2:1;set(K[row*3+col])},{passive:true});
+document.addEventListener('mouseleave',()=>set('c'));place()})();
 ui();
 // AI process phases
 (()=>{const box=document.getElementById('phases');if(!box)return;const tabs=[...box.querySelectorAll('.ph-tab')],pans=[...box.querySelectorAll('.ph-panel')];let cur=0,timer=null,manual=false;const DUR=5000;box.style.setProperty('--dur',DUR+'ms');
