@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drago Dimitrov — UX Design Lead</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0b0b;--paper:#f6f6f4;--mute-d:#8a8a8a;--mute-l:#6e6e6e;--line-d:#262626;--line-l:#dcdcd8;--pad:120px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--ink);color:var(--paper);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{padding:120px var(--pad)}
+.light{background:var(--paper);color:var(--ink)}
+.dark{background:var(--ink);color:var(--paper)}
+.mute{color:var(--mute-d)} .light .mute{color:var(--mute-l)}
+
+/* header */
+.hdr{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:24px var(--pad);color:#fff;transition:background .3s,color .3s,padding .3s}
+.hdr.solid{background:rgba(11,11,11,.85);backdrop-filter:blur(10px);padding-top:16px;padding-bottom:16px}
+.logo{font-weight:600;font-size:18px;text-decoration:none}
+.hdr-r{display:flex;gap:32px;align-items:center}
+.hdr-r a{font-weight:500;font-size:15px;text-underline-offset:4px}
+.menu-btn{display:flex;align-items:center;gap:12px;padding:11px 20px;border:1px solid currentColor;border-radius:999px;background:none;color:inherit;font:500 15px Inter,sans-serif;cursor:pointer}
+.burger{display:grid;gap:5px}.burger i{display:block;width:18px;height:1.5px;background:currentColor}
+
+/* menu overlay */
+.menu{position:fixed;inset:0;z-index:30;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;justify-content:space-between;padding:24px var(--pad) 56px;transform:translateY(-100%);visibility:hidden;transition:transform .55s cubic-bezier(.7,0,.2,1),visibility 0s .55s}
+.menu.open{transform:none;visibility:visible;transition:transform .55s cubic-bezier(.7,0,.2,1)}
+.menu-top{display:flex;justify-content:space-between;align-items:center}
+.menu nav{display:flex;flex-direction:column;gap:4px}
+.menu nav a{font-size:clamp(40px,6vw,88px);font-weight:600;letter-spacing:-.04em;text-decoration:none;line-height:1.1;display:flex;gap:24px;align-items:baseline}
+.menu nav a span{font-size:14px;font-weight:500;letter-spacing:.06em;color:var(--mute-l)}
+.menu nav a:hover{opacity:.5}
+
+/* hero */
+.hero{position:relative;height:100vh;min-height:640px;overflow:hidden;color:#fff}
+.hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 45%,rgba(0,0,0,.78) 100%)}
+.intro{position:absolute;z-index:2;left:var(--pad);right:var(--pad);bottom:88px}
+.eyebrow{font-size:22px;font-weight:500;opacity:.85}
+.name{font-size:clamp(52px,9.2vw,136px);cursor:default;font-weight:600;letter-spacing:-.045em;line-height:1;margin:14px 0 26px}
+.meta{display:flex;flex-wrap:wrap;gap:12px 48px;font-size:16px;opacity:.85}
+.vctl{position:absolute;z-index:3;right:var(--pad);bottom:88px;display:flex;align-items:center;gap:10px}
+.vbtn{width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.25);backdrop-filter:blur(8px);color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .2s,transform .2s}
+.vbtn:hover{background:rgba(255,255,255,.18);transform:scale(1.05)}
+.vbtn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.vbtn svg{width:22px;height:22px;fill:currentColor}
+.vbtn .i-play,.vbtn .i-off,.vbtn .i-replay{display:none}
+.vbtn.ended .i-replay{display:block}.vbtn.ended .i-play,.vbtn.ended .i-pause{display:none!important}
+.vbtn.paused .i-play,.vbtn.muted .i-off{display:block}
+.vbtn.paused .i-pause,.vbtn.muted .i-on{display:none}
+.hint{font-size:13px;font-weight:500;letter-spacing:.04em;padding:8px 14px;border-radius:999px;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);opacity:0;transition:opacity .4s;pointer-events:none;animation:pulse 2s ease-in-out infinite}
+.hint.show{opacity:1}
+@keyframes pulse{50%{background:rgba(0,0,0,.55)}}
+
+/* section head */
+.sh{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:56px}
+.num{font-size:14px;font-weight:500;letter-spacing:.06em;margin-bottom:14px}
+h2{font-size:clamp(40px,4vw,56px);font-weight:600;letter-spacing:-.03em;line-height:1.05}
+.bg{font-size:18px}
+
+/* work */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+.tab{padding:10px 18px;border-radius:999px;border:1px solid var(--line-l);background:none;font:500 15px Inter,sans-serif;color:var(--ink);cursor:pointer;transition:.2s}
+.tab.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:56px 24px}
+.card{text-decoration:none;display:flex;flex-direction:column;gap:18px}
+.card.hide{display:none}
+.cover{aspect-ratio:7/5;border-radius:16px;display:grid;place-items:center;overflow:hidden;position:relative;transition:transform .5s}
+.cover.k{background:#111;color:#f6f6f4}.cover.w{background:#e7e7e3;color:#0b0b0b}
+.card:hover .cover{transform:scale(.985)}
+.wm{font-size:clamp(28px,3.4vw,52px);transition:transform .5s}
+.card:hover .wm{transform:scale(1.06)}
+.cm{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.cm h3{font-size:24px;font-weight:600;letter-spacing:-.02em}
+.cm span{font-size:15px;white-space:nowrap}
+.card p{font-size:16px;line-height:1.5;max-width:520px}
+.all{display:inline-flex;margin-top:64px;padding:16px 26px;border-radius:999px;border:1.5px solid var(--ink);text-decoration:none;font-weight:500}
+
+
+.cover.k{background:radial-gradient(120% 90% at 70% 20%,#2a2a2a 0%,#111 55%,#0b0b0b 100%)}
+.cover .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.75) contrast(1.05);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.cover.ph::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 50%,rgba(0,0,0,.45),rgba(0,0,0,.72));transition:background .5s}
+.card:hover .cover.ph::after{background:radial-gradient(80% 70% at 50% 50%,rgba(0,0,0,.35),rgba(0,0,0,.62))}
+.cover .wm,.cover .logo{position:relative;z-index:1;color:#fff}
+.cover .logo{width:44%;max-height:24%;object-fit:contain;filter:drop-shadow(0 2px 18px rgba(0,0,0,.35));transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.card:hover .cover .logo{transform:scale(1.05)}
+.card:hover .cover .bgimg{transform:scale(1.06)}
+.card:hover .cover{transform:none}
+.cover.ph.bright::after{background:radial-gradient(80% 70% at 50% 50%,rgba(0,0,0,.62),rgba(0,0,0,.8))}
+.card:hover .cover.ph.bright::after{background:radial-gradient(80% 70% at 50% 50%,rgba(0,0,0,.55),rgba(0,0,0,.72))}
+/* lists */
+.row{display:grid;grid-template-columns:80px 1fr 1fr;gap:40px;padding:36px 0;border-top:1px solid var(--line-d)}
+.light .row{border-color:var(--line-l)}
+.row h3{font-size:30px;font-weight:600;letter-spacing:-.025em;line-height:1.15}
+.row p{font-size:18px;line-height:1.5;opacity:.8}
+.row small{display:block;margin-top:12px;font-size:14px;font-weight:500}
+.xp{grid-template-columns:200px 380px 1fr}
+.xp h3{font-size:28px}
+.xp ul{list-style:none;font-size:17px;line-height:1.7;opacity:.8}
+.xp ul li::before{content:"— "}
+
+/* statement */
+.stmt{text-align:center;padding:180px var(--pad)}
+.stmt p{font-size:clamp(34px,4.2vw,60px);font-weight:600;letter-spacing:-.03em;line-height:1.1;max-width:1040px;margin:24px auto 0}
+
+/* industries + stats */
+.inds{display:grid;grid-template-columns:repeat(5,1fr);gap:24px}
+.inds div{border-top:1px solid var(--line-l);padding-top:24px}
+.inds b{display:block;font-size:24px;font-weight:600;letter-spacing:-.02em;margin-top:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:96px}
+.stats b{display:block;font-size:clamp(56px,6vw,88px);font-weight:600;letter-spacing:-.05em;line-height:1}
+.stats span{display:block;margin-top:10px;font-size:16px}
+
+/* about */
+.about{display:grid;grid-template-columns:480px 1fr;gap:80px;align-items:center}
+.about img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block}
+.ab{display:flex;flex-direction:column;gap:24px}
+.ab-top{display:flex;justify-content:space-between}
+.ab p{font-size:18px;line-height:1.6;opacity:.8}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips span{padding:9px 15px;border:1px solid var(--line-d);border-radius:999px;font-size:14px;font-weight:500}
+.mail{font-size:clamp(20px,2vw,28px);font-weight:600;text-underline-offset:6px;word-break:break-all}
+.clocks{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px}
+.clocks div{border-top:1px solid var(--line-d);padding-top:16px}
+.clocks b{display:block;font-size:32px;font-weight:600;margin:6px 0 4px;font-variant-numeric:tabular-nums}
+.cap{font-size:13px;font-weight:500;letter-spacing:.06em}
+
+/* footer */
+.ftr{padding:120px var(--pad) 48px}
+.ftr h2{font-size:clamp(80px,11vw,160px);letter-spacing:-.05em;line-height:1}
+.ftr a.big{text-decoration:none}
+.ftr-b{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:56px;font-size:14px}
+.ftr-b a{text-decoration:none;margin-left:24px}
+
+
+/* AI section */
+.ai-top{display:grid;grid-template-columns:1fr 1.15fr;gap:64px;align-items:center}
+.ai-intro{display:flex;flex-direction:column;gap:24px}
+.ai-lead{font-size:clamp(32px,3.4vw,48px);font-weight:600;letter-spacing:-.03em;line-height:1.1}
+.ai-intro p.mute{font-size:18px;line-height:1.6}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tools span:not(.cap){padding:9px 15px;border:1px solid var(--line-l);border-radius:999px;font-size:14px;font-weight:500;background:#fff}
+.tools .cap{margin-right:6px}
+.term{background:#0b0b0b;color:#e8e8e6;border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,.45);position:relative}
+.term-bar{display:flex;align-items:center;gap:7px;padding:14px 18px;border-bottom:1px solid #222}
+.term-bar i{width:11px;height:11px;border-radius:50%;background:#3a3a3a}
+.term-bar span{margin-left:10px;font-size:12px;color:#8a8a8a;font-family:ui-monospace,Menlo,Consolas,monospace}
+.term pre{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:14px;line-height:1.75;padding:22px 22px 64px;min-height:360px;white-space:pre-wrap}
+.term pre .ok{color:#9be29b}.term pre .warn{color:#f3d36b}.term pre .dim{color:#7a7a7a}.term pre .hi{color:#fff;font-weight:600}
+.term pre .cur{display:inline-block;width:8px;height:16px;background:#e8e8e6;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.term-replay{position:absolute;right:16px;bottom:14px;background:none;border:1px solid #333;color:#bbb;border-radius:999px;padding:7px 14px;font:500 13px Inter,sans-serif;cursor:pointer;opacity:0;transition:opacity .3s}
+.term-replay.show{opacity:1}
+.ai-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:80px}
+.ai-card{border-top:1px solid var(--line-l);padding-top:24px;display:flex;flex-direction:column;gap:12px}
+.ai-card h3{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.ai-card p{font-size:16px;line-height:1.55}
+
+.ai-top{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end}
+.ai-text{font-size:18px;line-height:1.6}
+.marquee{margin:80px calc(-1 * var(--pad)) 0;overflow:hidden;border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l);padding:22px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mq-track{display:flex;gap:36px;align-items:center;width:max-content;animation:mq 60s linear infinite}
+.mq-track span{font-size:clamp(28px,3vw,44px);font-weight:600;letter-spacing:-.03em;white-space:nowrap}
+.mq-track i{font-style:normal;font-size:20px;color:var(--mute-l)}
+.marquee:hover .mq-track{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+.tk-head{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin:80px 0 32px}
+.tk-head h3{font-size:32px;font-weight:600;letter-spacing:-.03em}
+.tk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.tk-cat{background:#fff;border:1px solid var(--line-l);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:22px;transition:transform .3s,box-shadow .3s}
+.tk-cat:hover{transform:translateY(-4px);box-shadow:0 24px 48px -28px rgba(0,0,0,.25)}
+.tk-h{display:flex;align-items:baseline;gap:12px}
+.tk-h h3{font-size:20px;font-weight:600;letter-spacing:-.02em;flex:1}
+.tk-n{font-size:14px;font-weight:500}
+.tk-tools{display:flex;flex-wrap:wrap;gap:8px}
+.tk-tools span{padding:8px 14px;border-radius:999px;background:var(--paper);border:1px solid var(--line-l);font-size:14px;font-weight:500;transition:background .2s,color .2s}
+.tk-tools span:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.mq-track{animation:none}}
+@media (max-width:1100px){.tk-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.ai-top{grid-template-columns:1fr;gap:24px}.tk-grid{grid-template-columns:1fr}.tk-head{flex-direction:column}}
+
+.phases{background:var(--ink);color:var(--paper);border-radius:24px;overflow:hidden}
+.ph-tabs{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--line-d)}
+.ph-tab{position:relative;background:none;border:0;border-right:1px solid var(--line-d);color:#8a8a8a;font:600 20px Inter,sans-serif;letter-spacing:-.02em;text-align:left;padding:28px 28px 30px;cursor:pointer;transition:color .3s,background .3s}
+.ph-tab:last-child{border-right:0}
+.ph-tab span{display:block;font-size:13px;font-weight:500;letter-spacing:.06em;margin-bottom:10px}
+.ph-tab:hover{color:#ccc}
+.ph-tab.on{color:#fff;background:#151515}
+.ph-prog{position:absolute;left:0;bottom:0;height:2px;width:0;background:#fff}
+.ph-tab.on .ph-prog{animation:prog var(--dur,5s) linear forwards}
+.phases.manual .ph-tab.on .ph-prog{animation:none;width:100%}
+@keyframes prog{to{width:100%}}
+.ph-body{position:relative;min-height:260px}
+.ph-panel{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;opacity:0;transform:translateY(12px);transition:opacity .45s,transform .45s;pointer-events:none}
+.ph-panel.on{position:relative;opacity:1;transform:none;pointer-events:auto}
+.ph-col{padding:40px 40px 48px}
+.ph-col+.ph-col{border-left:1px solid var(--line-d)}
+.ph-lab{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8a8a8a;margin-bottom:22px}
+.ph-lab b{width:10px;height:10px;border-radius:50%}
+.dot-ai{border:1.5px solid #fff}.dot-me{background:#fff}
+.ph-col ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+.ph-col li{font-size:clamp(18px,1.6vw,22px);font-weight:500;letter-spacing:-.01em;line-height:1.35}
+.ph-col:last-child li{color:#fff}.ph-col:first-child li{color:#bdbdbd}
+@media (max-width:900px){.ph-tabs{grid-template-columns:repeat(5,minmax(120px,1fr));overflow-x:auto}.ph-tab{padding:20px;font-size:17px}.ph-panel{grid-template-columns:1fr}.ph-col+.ph-col{border-left:0;border-top:1px solid var(--line-d)}.ph-col{padding:28px 24px}}
+/* flipped section borders */
+.dark .inds div{border-color:var(--line-d)}
+.light .chips span,.light .clocks div{border-color:var(--line-l)}
+@media (max-width:1100px){.ai-top{grid-template-columns:1fr}.ai-cards{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.ai-cards{grid-template-columns:1fr}.term pre{font-size:12.5px}}
+
+
+/* ===== project pages ===== */
+.pv-hero{position:relative;min-height:86vh;display:flex;flex-direction:column;justify-content:flex-end;padding:140px var(--pad) 72px;color:#fff;overflow:hidden}
+.pv-hero>img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04);animation:pvzoom 14s ease-out forwards}
+@keyframes pvzoom{to{transform:scale(1)}}
+.pv-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.35) 40%,rgba(0,0,0,.85))}
+.pv-hero>*:not(.bg){position:relative;z-index:1}
+.pv-back{position:absolute!important;top:104px;left:var(--pad);font-size:15px;font-weight:500;text-decoration:none;opacity:.85}
+.pv-back:hover{opacity:1}
+.pv-logo{height:56px;width:auto;max-width:320px;object-fit:contain;object-position:left;margin-bottom:40px}
+.pv-hero h1{font-size:clamp(40px,5.6vw,84px);font-weight:600;letter-spacing:-.04em;line-height:1.02;max-width:1100px}
+.pv-hero .tl{font-size:clamp(18px,1.6vw,22px);opacity:.82;max-width:720px;margin-top:22px;line-height:1.5}
+.pv-meta{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid rgba(255,255,255,.25);margin-top:56px}
+.pv-meta div{padding:20px 40px 0 0;margin-right:40px}
+.pv-meta span{display:block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin-bottom:6px}
+.pv-meta b{font-size:17px;font-weight:500}
+.pv-story{display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:48px}
+.pv-story div{border-top:2px solid var(--ink);padding-top:24px}
+.pv-story .cap{display:block;margin-bottom:16px}
+.pv-story p{font-size:clamp(19px,1.5vw,22px);line-height:1.5;letter-spacing:-.01em}
+.pv-hl{counter-reset:h}
+.pv-hl .row{grid-template-columns:80px 1fr 1.2fr}
+.pv-stats{display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:24px}
+.pv-stats b{display:block;font-size:clamp(72px,9vw,140px);font-weight:600;letter-spacing:-.06em;line-height:.95}
+.pv-stats span{display:block;margin-top:14px;font-size:17px}
+.pv-proc{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.pv-proc span{padding:12px 20px;border:1px solid var(--line-l);border-radius:999px;font-size:16px;font-weight:500;background:#fff}
+.pv-proc i{font-style:normal;color:var(--mute-l)}
+.dark .pv-proc span{background:transparent;border-color:var(--line-d)}
+.dark .pv-story div{border-color:var(--paper)}
+.dark .g-phones{background:radial-gradient(120% 100% at 50% 0%,#1d1d1d,#121212)}
+.dark .g-desk,.dark .g-tall{border-color:var(--line-d)}
+.gal{display:flex;flex-direction:column;gap:64px}
+.gal figure{margin:0}
+.gal figcaption{margin-top:16px;font-size:15px;color:var(--mute-l);max-width:720px}
+.dark .gal figcaption{color:var(--mute-d)}
+.g-img img,.g-board img{width:100%;display:block;border-radius:16px;cursor:zoom-in}
+.g-board{margin:0 calc(-1 * var(--pad) + 24px)}
+.g-desk{border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 40px 80px -40px rgba(0,0,0,.35);border:1px solid var(--line-l)}
+.g-desk .bar{display:flex;gap:7px;padding:12px 16px;background:#ececea;border-bottom:1px solid var(--line-l)}
+.g-desk .bar i{width:11px;height:11px;border-radius:50%;background:#cfcfcb}
+.g-desk img{width:100%;display:block;cursor:zoom-in}
+.g-tall{height:min(80vh,900px);overflow-y:auto;border-radius:16px;border:1px solid var(--line-l);background:#fff;scrollbar-width:thin}
+.g-tall img{width:100%;display:block}
+.g-hint{display:inline-block;margin-top:10px;font-size:13px;font-weight:500;letter-spacing:.04em;color:var(--mute-l)}
+.g-phones{display:flex;justify-content:center;gap:clamp(16px,3vw,40px);flex-wrap:wrap;padding:56px 24px;border-radius:24px;background:radial-gradient(120% 100% at 50% 0%,#ececea,#e2e2de)}
+.phone{width:clamp(180px,20vw,250px);aspect-ratio:9/19.5;border-radius:34px;padding:9px;background:#0b0b0b;box-shadow:0 30px 60px -25px rgba(0,0,0,.45);transition:transform .4s}
+.phone:hover{transform:translateY(-8px)}
+.phone img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:26px;display:block;cursor:zoom-in}
+.pv-next{display:block;position:relative;overflow:hidden;color:#fff;text-decoration:none;padding:120px var(--pad);min-height:60vh}
+.pv-next>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.pv-next::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.66);transition:background .5s}
+.pv-next:hover>img{transform:scale(1.05)}.pv-next:hover::after{background:rgba(0,0,0,.55)}
+.pv-next>div{position:relative;z-index:1}
+.pv-next h2{font-size:clamp(48px,8vw,128px);letter-spacing:-.05em;line-height:1;margin-top:18px}
+.lite-note{font-size:15px;color:var(--mute-l);margin-top:40px}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:60;background:rgba(8,8,8,.94);display:flex;align-items:center;justify-content:center;padding:40px;cursor:zoom-out}
+.lb[hidden]{display:none}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+.lb-x{position:absolute;top:20px;right:24px;background:none;border:1px solid #555;color:#fff;border-radius:999px;width:44px;height:44px;font-size:16px;cursor:pointer}
+/* all projects page */
+.ap-head h1{font-size:clamp(56px,9vw,140px);font-weight:600;letter-spacing:-.05em;line-height:1}
+@media (max-width:900px){.pv-story,.pv-stats{grid-template-columns:1fr}.pv-hl .row{grid-template-columns:1fr}.g-board{margin:0}.pv-meta div{padding-right:0;margin-right:32px}}
+
+
+/* rolling text */
+.roll{display:inline-flex;white-space:pre;vertical-align:bottom}
+.rc{display:inline-block;overflow:hidden;height:1.12em;line-height:1.12em;transition:width .7s cubic-bezier(.65,0,.25,1);vertical-align:bottom;text-align:center}
+.rt{display:flex;flex-direction:row;width:max-content}
+.rt span{text-align:left;flex:none}
+.rt span{display:block;height:1.12em;white-space:pre}
+
+/* custom cursor */
+.cur-dot,.cur-ring{position:fixed;left:0;top:0;pointer-events:none;z-index:100;border-radius:50%;mix-blend-mode:difference;opacity:0;transition:opacity .3s}
+.cur-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:#fff}
+.cur-ring{width:36px;height:36px;margin:-18px 0 0 -18px;border:1.5px solid #fff;transition:width .25s,height .25s,margin .25s,background .25s,opacity .3s}
+.cur-ring.big{width:72px;height:72px;margin:-36px 0 0 -36px;background:#fff}
+.cur-ring.view{width:96px;height:96px;margin:-48px 0 0 -48px;background:#fff;mix-blend-mode:normal}
+.cur-ring.view::after{content:"View";position:absolute;inset:0;display:grid;place-items:center;color:#0b0b0b;font:600 14px Inter,sans-serif}
+body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
+/* card tilt + spotlight */
+.cover{transform-style:preserve-3d;will-change:transform}
+.cover .spot{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.16),transparent 60%);opacity:0;transition:opacity .3s}
+.card:hover .cover .spot{opacity:1}
+@media (hover:none),(pointer:coarse){.cur-dot,.cur-ring{display:none}}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+@media (max-width:1100px){:root{--pad:48px}.about{grid-template-columns:1fr}.about img{max-width:480px}.xp{grid-template-columns:160px 1fr}.xp ul{grid-column:2}.inds{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){:root{--pad:24px}.wrap{padding:88px var(--pad)}.hdr-r>a{display:none}.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr;gap:12px}.xp ul{grid-column:auto}.inds,.stats{grid-template-columns:1fr 1fr}.clocks{grid-template-columns:1fr 1fr 1fr}.sh{flex-direction:column;align-items:flex-start}.vctl{bottom:auto;top:92px;right:var(--pad)}.vbtn{width:44px;height:44px}.eyebrow{font-size:18px}.stmt{padding:120px var(--pad)}}
+</style>
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <a class="logo" href="#" aria-label="Dragomir Dimitrov"><span class="roll" data-a="Dragomir Dimitrov" data-b="Drago The UX" data-loop="1">Dragomir Dimitrov</span></a>
+  <div class="hdr-r">
+    <a href="#contact">Connect with me ↗</a>
+    <button class="menu-btn" id="openMenu" aria-expanded="false" aria-controls="menu">Menu <span class="burger"><i></i><i></i></span></button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div class="menu-top"><span class="logo">Drago Dimitrov</span><button class="menu-btn" id="closeMenu">Close ✕</button></div>
+  <nav>
+    <a href="#work"><span>01</span>Work</a>
+    <a href="#expertise"><span>02</span>Expertise</a>
+    <a href="#ai"><span>03</span>AI × UX</a>
+    <a href="#experience"><span>04</span>Experience</a>
+    <a href="#industries"><span>05</span>Industries</a>
+    <a href="#about"><span>06</span>About</a>
+    <a href="#contact"><span>07</span>Contact</a>
+  </nav>
+  <div class="mute" style="font-size:14px">Varna, Bulgaria · drago.krasimirov.dimitrov@gmail.com</div>
+</div>
+
+<main id="home">
+<section class="hero" id="top">
+  <img class="poster" src="poster.jpg" alt="">
+  <video id="heroVid" src="hero_once2.mp4" poster="poster.jpg" autoplay playsinline preload="auto"></video>
+  <div class="intro">
+    <div class="eyebrow">ux design lead / product designer</div>
+    <h1 class="name" aria-label="Dragomir Dimitrov"><span class="roll" data-a="Dragomir Dimitrov" data-b="Drago The UX">Dragomir Dimitrov</span></h1>
+    <div class="meta"><span>Based in Varna, Bulgaria</span><span>E-commerce UX · Design Systems · AI-assisted design</span><span>15+ Years Experience</span></div>
+  </div>
+  <div class="vctl">
+    <span class="hint" id="soundHint">Tap anywhere for sound</span>
+    <button class="vbtn" id="btnPlay" aria-label="Pause video">
+      <svg class="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>
+      <svg class="i-replay" viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 1-6.6 4.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.2 4.5l1.3 5.3 5.2-1.4z"/></svg>
+    </button>
+    <button class="vbtn" id="btnSound" aria-label="Mute">
+      <svg class="i-on" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="i-off" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</section>
+
+<section class="light wrap" id="work">
+  <div class="sh rv"><div><div class="num mute">// 01</div><h2>Selected work</h2></div><div class="bg mute">Избрани проекти</div></div>
+  <div class="tabs rv" role="tablist">
+    <button class="tab on" data-f="all">All</button>
+    <button class="tab" data-f="ecom">E-commerce</button>
+    <button class="tab" data-f="fashion">Fashion</button>
+    <button class="tab" data-f="travel">Travel</button>
+    <button class="tab" data-f="checkout">Checkout</button>
+  </div>
+  <div class="grid">
+    <a class="card rv" href="#gatwick" data-c="travel">
+      <div class="cover k ph"><img class="bgimg" src="p_gatwick.jpg" alt="" loading="lazy"><img class="logo" src="logo_gatwick.png" alt="London Gatwick logo"></div>
+      <div class="cm"><h3>Gatwick Airport</h3><span class="mute">Travel · Components</span></div>
+      <p class="mute">Booking-flow components — pricing transparency, urgency timer A/B tests and vehicle validation in checkout.</p>
+    </a>
+    <a class="card rv" href="#cricut" data-c="ecom">
+      <div class="cover k ph bright"><img class="bgimg" src="p_cricut.jpg" alt="" loading="lazy"><img class="logo" src="logo_cricut.png" alt="Cricut logo"></div>
+      <div class="cm"><h3>Cricut</h3><span class="mute">E-commerce · Loyalty</span></div>
+      <p class="mute">Rewards dashboard, Patterns marketplace and e-commerce UX across the Creative Labs suite.</p>
+    </a>
+    <a class="card rv" href="#birkenstock" data-c="ecom fashion">
+      <div class="cover k ph bright"><img class="bgimg" src="p_birkenstock.jpg" alt="" loading="lazy"><img class="logo" src="logo_birkenstock.png" alt="Birkenstock logo"></div>
+      <div class="cm"><h3>Birkenstock</h3><span class="mute">E-commerce · UX Lead</span></div>
+      <p class="mute">Led the design process from research to launch — a more intuitive store that lifted satisfaction and conversions.</p>
+    </a>
+    <a class="card rv" href="#dsquared2" data-c="fashion ecom">
+      <div class="cover k ph"><img class="bgimg" src="p_dsq.jpg" alt="" loading="lazy"><img class="logo" src="logo_dsq.png" alt="DSQUARED2 logo"></div>
+      <div class="cm"><h3>DSQUARED2</h3><span class="mute">Luxury fashion · UX Lead</span></div>
+      <p class="mute">Led a tight-knit UX team building a competitive e-commerce platform for a global fashion house.</p>
+    </a>
+    <a class="card rv" href="#toms" data-c="fashion ecom">
+      <div class="cover k ph"><img class="bgimg" src="p_toms.jpg" alt="" loading="lazy"><img class="logo" src="logo_toms.png" alt="TOMS logo"></div>
+      <div class="cm"><h3>TOMS</h3><span class="mute">Fashion · Re-platform</span></div>
+      <p class="mute">Complete rework of the existing experience — discovery, ideation, definition and enhancements.</p>
+    </a>
+    <a class="card rv" href="#steven-singer" data-c="checkout ecom">
+      <div class="cover k ph bright"><img class="bgimg" src="p_singer.jpg" alt="" loading="lazy"><img class="logo" src="logo_singer.png" alt="Steven Singer Jewelers logo"></div>
+      <div class="cm"><h3>Steven Singer Jewelers</h3><span class="mute">Checkout · Heuristics</span></div>
+      <p class="mute">A new checkout flow built on a detailed heuristic analysis — with measurable profit impact.</p>
+    </a>
+  </div>
+  <a class="all" href="#projects">See all projects →</a>
+</section>
+
+<section class="dark wrap" id="expertise">
+  <div class="sh rv"><div><div class="num mute">// 02</div><h2>Expertise</h2></div><div class="bg mute">Експертиза</div></div>
+  <div class="row rv"><span class="mute">01</span><h3>UX Leadership</h3><div><p>Leading and mentoring UX designers and researchers, planning resources and keeping delivery on time and in scope.</p><small class="mute">Team lead · Workshops · Estimation &amp; risk</small></div></div>
+  <div class="row rv"><span class="mute">02</span><h3>Research &amp; UX Audits</h3><div><p>Heuristic reviews, competitor analysis and requirements workshops that turn opinions into priorities.</p><small class="mute">UX audits · Client workshops · User flows</small></div></div>
+  <div class="row rv"><span class="mute">03</span><h3>E-commerce &amp; Checkout</h3><div><p>End-to-end flows for product discovery, booking and checkout — designed to convert.</p><small class="mute">PLP / PDP · Checkout · Loyalty</small></div></div>
+  <div class="row rv"><span class="mute">04</span><h3>Design Systems &amp; Components</h3><div><p>Reusable, accessible components built with an atomic approach to scale across large sites.</p><small class="mute">Component libraries · Prototyping · Accessibility</small></div></div>
+  <div class="row rv" style="border-bottom:1px solid var(--line-d)"><span class="mute">05</span><h3>Conversion &amp; Experimentation</h3><div><p>Designs built to be tested — urgency, pricing clarity and A/B variants.</p><small class="mute">A/B test design · CRO · Pricing transparency</small></div></div>
+</section>
+
+<section class="light wrap" id="ai">
+  <div class="sh rv"><div><div class="num mute">// 03</div><h2>AI × UX</h2></div><div class="bg mute">Изкуствен интелект</div></div>
+  <div class="ai-top rv">
+    <p class="ai-lead">AI is my co-pilot,<br>not my autopilot.</p>
+    <p class="mute ai-text">I use AI to move faster through the repetitive parts of UX — synthesis, audits, first drafts and prototypes — so more time goes into what still needs a human: judgement, empathy and the hard trade-offs.</p>
+  </div>
+  <div class="marquee" aria-hidden="true"><div class="mq-track"><span>Research synthesis</span><i>✦</i><span>Generative UI</span><i>✦</i><span>Prompt-to-prototype</span><i>✦</i><span>AI audits</span><i>✦</i><span>Design-to-code</span><i>✦</i><span>AI video</span><i>✦</i><span>Automation</span><i>✦</i><span>UX writing</span><i>✦</i><span>Accessibility checks</span><i>✦</i><span>Rapid testing</span><i>✦</i><span>Research synthesis</span><i>✦</i><span>Generative UI</span><i>✦</i><span>Prompt-to-prototype</span><i>✦</i><span>AI audits</span><i>✦</i><span>Design-to-code</span><i>✦</i><span>AI video</span><i>✦</i><span>Automation</span><i>✦</i><span>UX writing</span><i>✦</i><span>Accessibility checks</span><i>✦</i><span>Rapid testing</span><i>✦</i></div></div>
+  <div class="tk-head rv"><h3>Where AI fits in my process</h3><span class="mute">Tap a phase</span></div>
+  <div class="phases rv" id="phases">
+    <div class="ph-tabs"><button class="ph-tab on" data-i="0"><span>01</span>Discover<i class="ph-prog"></i></button><button class="ph-tab" data-i="1"><span>02</span>Define<i class="ph-prog"></i></button><button class="ph-tab" data-i="2"><span>03</span>Design<i class="ph-prog"></i></button><button class="ph-tab" data-i="3"><span>04</span>Validate<i class="ph-prog"></i></button><button class="ph-tab" data-i="4"><span>05</span>Deliver<i class="ph-prog"></i></button></div>
+    <div class="ph-body"><div class="ph-panel on" data-i="0">
+      <div class="ph-col"><div class="ph-lab"><b class="dot-ai"></b>AI accelerates</div><ul><li>Summarises research, reviews and support tickets</li><li>Scans competitors and market patterns</li><li>Drafts interview guides</li></ul></div>
+      <div class="ph-col"><div class="ph-lab"><b class="dot-me"></b>I own</div><ul><li>Talk to users and stakeholders</li><li>Decide which problems are worth solving</li></ul></div>
+    </div><div class="ph-panel" data-i="1">
+      <div class="ph-col"><div class="ph-lab"><b class="dot-ai"></b>AI accelerates</div><ul><li>Drafts user flows and journey maps</li><li>Surfaces patterns across messy data</li></ul></div>
+      <div class="ph-col"><div class="ph-lab"><b class="dot-me"></b>I own</div><ul><li>Frame the problem</li><li>Set success metrics and priorities</li></ul></div>
+    </div><div class="ph-panel" data-i="2">
+      <div class="ph-col"><div class="ph-lab"><b class="dot-ai"></b>AI accelerates</div><ul><li>Generates layout variations fast</li><li>Fills screens with realistic content</li><li>Flags design-system inconsistencies</li></ul></div>
+      <div class="ph-col"><div class="ph-lab"><b class="dot-me"></b>I own</div><ul><li>Craft hierarchy and interaction</li><li>Make the hard trade-offs</li></ul></div>
+    </div><div class="ph-panel" data-i="3">
+      <div class="ph-col"><div class="ph-lab"><b class="dot-ai"></b>AI accelerates</div><ul><li>Pre-scans heuristics and accessibility</li><li>Summarises test sessions</li></ul></div>
+      <div class="ph-col"><div class="ph-lab"><b class="dot-me"></b>I own</div><ul><li>Run the tests</li><li>Interpret what users really mean</li></ul></div>
+    </div><div class="ph-panel" data-i="4">
+      <div class="ph-col"><div class="ph-lab"><b class="dot-ai"></b>AI accelerates</div><ul><li>Turns designs into coded prototypes</li><li>Drafts specs and annotations</li></ul></div>
+      <div class="ph-col"><div class="ph-lab"><b class="dot-me"></b>I own</div><ul><li>Work side by side with developers</li><li>Own quality all the way to launch</li></ul></div>
+    </div></div>
+  </div>
+  <div class="ai-cards">
+    <div class="ai-card rv"><span class="cap mute">01</span><h3>Research synthesis</h3><p class="mute">Clustering interviews, reviews and support tickets into themes in hours — then validating them with real users.</p></div>
+    <div class="ai-card rv"><span class="cap mute">02</span><h3>AI-assisted UX audits</h3><p class="mute">Automated heuristic and accessibility pre-scans, followed by expert review and prioritisation.</p></div>
+    <div class="ai-card rv"><span class="cap mute">03</span><h3>Prompt-to-prototype</h3><p class="mute">From Figma to a clickable, coded prototype the same day — ideas get tested before dev time is spent.</p></div>
+    <div class="ai-card rv"><span class="cap mute">04</span><h3>Designing for AI</h3><p class="mute">Interfaces for AI features: trust, transparency, editable outputs and graceful failure states.</p></div>
+  </div>
+</section>
+
+<section class="dark wrap" id="experience">
+  <div class="sh rv"><div><div class="num mute">// 04</div><h2>Experience</h2></div><div class="bg mute">Опит</div></div>
+  <div class="row xp rv"><span class="mute">2024 — Present</span><div><h3>Astound Commerce</h3><div class="mute">UX Design Team Lead · Varna</div></div><ul><li>Lead and mentor a team of UX designers and researchers</li><li>Own UX strategy across multiple client projects</li><li>Run workshops, estimations and process improvements</li></ul></div>
+  <div class="row xp rv"><span class="mute">2019 — 2024</span><div><h3>Astound Commerce</h3><div class="mute">Sr. UX Designer (Projects Lead)</div></div><ul><li>Research, wireframes and hi-fi prototypes for global e-commerce brands</li><li>Client-facing requirements workshops and UX audits</li></ul></div>
+  <div class="row xp rv"><span class="mute">2018 — 2019</span><div><h3>Glenhawk</h3><div class="mute">Sr. UX Designer · London</div></div><ul><li>Interfaces for a large-scale internal financial platform</li><li>Thousands of hi-fi prototypes built on an atomic design system</li></ul></div>
+  <div class="row xp rv"><span class="mute">2009 — 2019</span><div><h3>Webnotize</h3><div class="mute">Founder &amp; Partner · Varna</div></div><ul><li>Grew a studio from a student apartment to a full team</li><li>Led UX/UI and brand strategy, mentoring a team of seven</li></ul></div>
+  <div class="row xp rv" style="border-bottom:1px solid var(--line-d)"><span class="mute">2007 — 2011</span><div><h3>Red Bull</h3><div class="mute">Student Brand Manager</div></div><ul><li>Brand-building campaigns and events for the student community</li></ul></div>
+</section>
+
+<section class="light stmt">
+  <div class="num mute rv">// mindset</div>
+  <p class="rv">Beauty and usability should go hand in hand. I make complex products feel simple — and measurable.</p>
+</section>
+
+<section class="dark wrap" id="industries">
+  <div class="sh rv"><div><div class="num mute">// 05</div><h2>Industries</h2></div><div class="bg mute">Индустрии</div></div>
+  <div class="inds rv">
+    <div><span class="cap mute">01</span><b>E-commerce &amp; Retail</b></div>
+    <div><span class="cap mute">02</span><b>Fashion &amp; Luxury</b></div>
+    <div><span class="cap mute">03</span><b>Travel &amp; Aviation</b></div>
+    <div><span class="cap mute">04</span><b>Healthcare</b></div>
+    <div><span class="cap mute">05</span><b>Fintech</b></div>
+  </div>
+  <div class="stats rv">
+    <div><b data-count="15">0</b><span class="mute">+ years designing</span></div>
+    <div><b data-count="7">0</b><span class="mute">years in enterprise e-commerce</span></div>
+    <div><b data-count="5">0</b><span class="mute">industries</span></div>
+    <div><b>[XX]+</b><span class="mute">projects shipped — placeholder</span></div>
+  </div>
+</section>
+
+<section class="light wrap" id="about">
+  <div class="about">
+    <img class="rv" src="portrait3.jpg" alt="Drago Dimitrov">
+    <div class="ab rv">
+      <div class="ab-top"><span class="num mute">// 06</span><span class="bg mute">За мен</span></div>
+      <h2>Hi, I'm Drago.</h2>
+      <p>UX Design Team Lead at Astound Commerce, based in Varna, Bulgaria. For me UX isn't only work — it's a way of thinking. Every project is a chance to learn something new and to improve things for the people who use them.</p>
+      <p>I care about precision, quality execution and teams where responsibility is shared.</p>
+      <div class="chips"><span>Salesforce Certified</span><span>Figma</span><span>Prototyping</span><span>UX Audits</span><span>Bulgarian · English</span></div>
+      <div id="contact" style="margin-top:8px">
+        <div class="cap mute">FOR WORK INQUIRIES</div>
+        <a class="mail" href="mailto:drago.krasimirov.dimitrov@gmail.com">drago.krasimirov.dimitrov@gmail.com</a>
+        <div style="margin-top:12px"><a href="https://www.linkedin.com/in/drago-krasimirov-dimitrov" style="font-weight:500;text-underline-offset:4px">LinkedIn ↗</a></div>
+      </div>
+      <div class="clocks">
+        <div><span class="cap mute">VARNA</span><b data-tz="Europe/Sofia">--:--</b><span class="mute" style="font-size:14px">Home</span></div>
+        <div><span class="cap mute">LONDON</span><b data-tz="Europe/London">--:--</b><span class="mute" style="font-size:14px">UK clients</span></div>
+        <div><span class="cap mute">UTAH</span><b data-tz="America/Denver">--:--</b><span class="mute" style="font-size:14px">US clients</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<main id="view" hidden></main>
+<div class="lb" id="lb" hidden><button class="lb-x" aria-label="Close">✕</button><img alt=""></div>
+
+<footer class="dark ftr">
+  <a class="big" href="mailto:drago.krasimirov.dimitrov@gmail.com"><h2 class="rv">Let's talk.</h2></a>
+  <div class="ftr-b mute"><span>© 2026 Dragomir Dimitrov</span><span><a href="https://www.linkedin.com/in/drago-krasimirov-dimitrov">LinkedIn</a><a href="#" onclick="event.preventDefault();scrollTo({top:0,behavior:'smooth'})">Back to top ↑</a></span></div>
+</footer>
+
+<div class="cur-dot" aria-hidden="true"></div><div class="cur-ring" aria-hidden="true"></div>
+<script src="projects.js"></script>
+<script>
+// header solid after hero
+const hdr=document.getElementById('hdr'),hero=document.getElementById('top');
+new IntersectionObserver(([e])=>hdr.classList.toggle('solid',!e.isIntersecting),{rootMargin:'-80px 0px 0px 0px'}).observe(hero);
+// menu
+const menu=document.getElementById('menu'),ob=document.getElementById('openMenu');
+const setMenu=o=>{menu.classList.toggle('open',o);menu.setAttribute('aria-hidden',!o);ob.setAttribute('aria-expanded',o)};
+ob.onclick=()=>setMenu(true);document.getElementById('closeMenu').onclick=()=>setMenu(false);
+menu.querySelectorAll('nav a').forEach(a=>a.onclick=()=>setMenu(false));
+addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
+// filters
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));const f=t.dataset.f;document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',f!=='all'&&!c.dataset.c.split(' ').includes(f)))});
+
+// reveal + counters
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('in');e.target.querySelectorAll('[data-count]').forEach(b=>{const n=+b.dataset.count;let i=0;const s=setInterval(()=>{b.textContent=++i;if(i>=n)clearInterval(s)},900/n)});io.unobserve(e.target)}),{threshold:.15});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+// hero video: try with sound, fall back to muted + unmute on first interaction
+const v=document.getElementById('heroVid'),bP=document.getElementById('btnPlay'),bS=document.getElementById('btnSound'),hint=document.getElementById('soundHint');
+let userPaused=false,userMuted=false;
+const ui=()=>{bP.classList.toggle('paused',v.paused);bP.classList.toggle('ended',v.ended);bP.setAttribute('aria-label',v.ended?'Replay video':v.paused?'Play video':'Pause video');bS.classList.toggle('muted',v.muted);bS.setAttribute('aria-label',v.muted?'Unmute':'Mute');hint.classList.toggle('show',v.muted&&!userMuted&&!v.ended)};
+v.addEventListener('play',ui);v.addEventListener('ended',ui);v.addEventListener('pause',ui);v.addEventListener('volumechange',ui);
+v.muted=false;v.volume=1;
+v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});ui();
+  const unlock=e=>{if(e.target.closest&&e.target.closest('.vbtn'))return;if(!userMuted&&!v.ended){v.muted=false;v.currentTime=0;v.play().catch(()=>{v.muted=true})}ui();removeEventListener('pointerdown',unlock,true);removeEventListener('keydown',unlock,true)};
+  addEventListener('pointerdown',unlock,true);addEventListener('keydown',unlock,true);});
+bP.onclick=()=>{if(v.ended){userPaused=false;v.currentTime=0;v.play()}else if(v.paused){userPaused=false;v.play()}else{userPaused=true;v.pause()}};
+bS.onclick=()=>{v.muted=!v.muted;userMuted=v.muted;if(!v.muted&&v.paused&&!userPaused&&!v.ended)v.play();ui()};
+// pause when hero is off-screen, resume when back (unless user paused)
+new IntersectionObserver(([e])=>{if(!e.isIntersecting)v.pause();else if(!userPaused&&!v.ended)v.play().catch(()=>{})},{threshold:.25}).observe(hero);
+ui();
+// AI process phases
+(()=>{const box=document.getElementById('phases');if(!box)return;const tabs=[...box.querySelectorAll('.ph-tab')],pans=[...box.querySelectorAll('.ph-panel')];let cur=0,timer=null,manual=false;const DUR=5000;box.style.setProperty('--dur',DUR+'ms');
+const show=i=>{cur=i;tabs.forEach((t,k)=>{t.classList.remove('on');void t.offsetWidth;t.classList.toggle('on',k===i)});pans.forEach((p,k)=>p.classList.toggle('on',k===i))};
+const auto=()=>{clearInterval(timer);timer=setInterval(()=>show((cur+1)%tabs.length),DUR)};
+tabs.forEach((t,i)=>t.onclick=()=>{manual=true;box.classList.add('manual');clearInterval(timer);show(i)});
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){box.classList.add('manual');return}
+new IntersectionObserver(([e])=>{if(manual)return;if(e.isIntersecting){show(cur);auto()}else clearInterval(timer)},{threshold:.4}).observe(box);})();
+
+// ===== router + project renderer =====
+(()=>{const P=window.PROJECTS||[],home=document.getElementById('home'),view=document.getElementById('view'),vid=document.getElementById('heroVid');
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sh=(n,t,bg)=>`<div class="sh rv"><div><div class="num mute">// ${n}</div><h2>${t}</h2></div>${bg?`<div class="bg mute">${bg}</div>`:''}</div>`;
+function gallery(items){let out='',i=0;while(i<items.length){const it=items[i];
+  if(it.type==='mobile'){const g=[];while(i<items.length&&items[i].type==='mobile')g.push(items[i++]);const cap=g.map(x=>x.caption).filter(Boolean).join(' ');
+    out+=`<figure class="rv"><div class="g-phones">${g.map(x=>`<div class="phone"><img src="${x.src}" alt="" loading="lazy"></div>`).join('')}</div>${cap?`<figcaption>${esc(cap)}</figcaption>`:''}</figure>`;continue}
+  const cap=it.caption?`<figcaption>${esc(it.caption)}</figcaption>`:'';
+  if(it.type==='desktop')out+=`<figure class="rv"><div class="g-desk"><div class="bar"><i></i><i></i><i></i></div><img src="${it.src}" alt="" loading="lazy"></div>${cap}</figure>`;
+  else if(it.type==='tall')out+=`<figure class="rv"><div class="g-tall"><img src="${it.src}" alt="" loading="lazy"></div><span class="g-hint">↕ SCROLL INSIDE</span>${cap}</figure>`;
+  else if(it.type==='board')out+=`<figure class="rv g-board"><img src="${it.src}" alt="" loading="lazy">${cap}</figure>`;
+  else out+=`<figure class="rv g-img"><img src="${it.src}" alt="" loading="lazy">${cap}</figure>`;i++}return out}
+function card(p){return `<a class="card rv" href="#${p.slug}" data-c="${(p.tags||[]).join(' ')}"><div class="cover k ph"><img class="bgimg" src="${p.cover}" alt="" loading="lazy"><img class="logo" src="${p.logo}" alt="${esc(p.client)} logo"></div><div class="cm"><h3>${esc(p.client)}</h3><span class="mute">${esc((p.meta&&p.meta.Industry)||'')}</span></div>${p.title?`<p class="mute">${esc(p.title)}</p>`:''}</a>`}
+function renderProject(p){const idx=P.indexOf(p),nx=P[(idx+1)%P.length];let n=0,dark=false,h='';
+  const sec=(inner,id='')=>{dark=!dark;return `<section class="${dark?'light':'dark'} wrap">${inner}</section>`};
+  dark=false; // hero is dark, first section light
+  h+=`<section class="pv-hero"><img class="bg" src="${p.cover}" alt=""><a class="pv-back" href="#projects">← All projects</a><img class="pv-logo" src="${p.logo}" alt="${esc(p.client)} logo"><h1>${esc(p.title||p.client)}</h1>${p.tagline?`<p class="tl">${esc(p.tagline)}</p>`:''}${p.meta?`<div class="pv-meta">${Object.entries(p.meta).map(([k,v])=>`<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>`:''}</section>`;
+  const st=[['Challenge',p.challenge],['Approach',p.approach],['Outcome',p.outcome]].filter(x=>x[1]);
+  if(st.length)h+=sec(sh(String(++n).padStart(2,'0'),'The story','История')+`<div class="pv-story rv" style="--n:${st.length}">${st.map(([k,v])=>`<div><span class="cap mute">${k.toUpperCase()}</span><p>${esc(v)}</p></div>`).join('')}</div>`);
+  if(p.highlights&&p.highlights.length)h+=sec(sh(String(++n).padStart(2,'0'),'What I did','Какво направих')+`<div class="pv-hl">${p.highlights.map((x,i)=>`<div class="row rv"${i===p.highlights.length-1?` style="border-bottom:1px solid var(--line-${dark?'d':'l'})"`:''}><span class="mute">0${i+1}</span><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></div>`).join('')}</div>`);
+  if(p.stats&&p.stats.length)h+=sec(`<div class="pv-stats rv" style="--n:${p.stats.length}">${p.stats.map(x=>`<div><b>${esc(x[0])}</b><span class="mute">${esc(x[1])}</span></div>`).join('')}</div>`);
+  if(p.process&&p.process.length)h+=sec(sh(String(++n).padStart(2,'0'),'Process','Процес')+`<div class="pv-proc rv">${p.process.map(x=>`<span>${esc(x)}</span>`).join('<i>→</i>')}</div>`);
+  if(p.gallery&&p.gallery.length)h+=sec(sh(String(++n).padStart(2,'0'),'The work','Работата')+`<div class="gal">${gallery(p.gallery)}</div>`);
+  else h+=sec(`<p class="lite-note rv">Visuals for this project are under NDA — happy to walk through the work in person.</p>`);
+  h+=`<a class="pv-next" href="#${nx.slug}"><img src="${nx.cover}" alt=""><div><span class="cap" style="opacity:.7">NEXT PROJECT →</span><h2>${esc(nx.client)}</h2></div></a>`;
+  return h}
+function renderAll(){return `<section class="light wrap" style="padding-top:180px"><div class="ap-head rv"><div class="num mute">// ALL PROJECTS</div><h1>Selected work</h1></div>
+  <div class="tabs rv" style="margin-top:56px" id="apTabs"><button class="tab on" data-f="all">All</button><button class="tab" data-f="ecom">E-commerce</button><button class="tab" data-f="fashion">Fashion</button><button class="tab" data-f="travel">Travel</button><button class="tab" data-f="checkout">Checkout</button></div>
+  <div class="grid" id="apGrid">${P.map(card).join('')}</div></section>`}
+function bindTabs(root){root.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{root.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));const f=t.dataset.f;root.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',f!=='all'&&!c.dataset.c.split(' ').includes(f)))})}
+function observe(root){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});root.querySelectorAll('.rv').forEach(el=>io.observe(el))}
+function route(){const id=decodeURIComponent(location.hash.slice(1));const p=P.find(x=>x.slug===id);
+  if(p||id==='projects'){view.innerHTML=p?renderProject(p):renderAll();home.hidden=true;view.hidden=false;if(vid&&!vid.paused)vid.pause();
+    if(!p)bindTabs(view);observe(view);window.scrollTo(0,0);document.title=(p?p.client+' — ':'Projects — ')+'Drago Dimitrov';hdr.classList.add('solid');return}
+  view.hidden=true;view.innerHTML='';home.hidden=false;document.title='Drago Dimitrov — UX Design Lead';
+  if(id){const el=document.getElementById(id);if(el)setTimeout(()=>el.scrollIntoView(),30)}else window.scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+// lightbox
+const lb=document.getElementById('lb'),lbi=lb.querySelector('img');
+document.addEventListener('click',e=>{const im=e.target.closest('.gal img');if(im){lbi.src=im.src;lb.hidden=false}});
+lb.onclick=()=>{lb.hidden=true;lbi.src=''};addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true});
+})();
+
+
+// ===== rolling text with symbol scramble (Dragomir Dimitrov ⇄ Drago The UX) =====
+(()=>{const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SYM='#%&*@$/\\<>{}[]=+?!~^01UXΔ◆●';const rnd=()=>SYM[Math.floor(Math.random()*SYM.length)];
+function build(el){const a=el.dataset.a,b=el.dataset.b,n=Math.max(a.length,b.length),cs=getComputedStyle(el);
+  const m=document.createElement('span');m.style.cssText=`position:absolute;visibility:hidden;white-space:pre;font:${cs.font};letter-spacing:${cs.letterSpacing}`;document.body.appendChild(m);
+  const w=c=>{if(!c)return 0;m.textContent=c;return m.getBoundingClientRect().width};
+  el.innerHTML='';const cells=[];
+  for(let i=0;i<n;i++){const ca=a[i]||'',cb=b[i]||'';const c=document.createElement('span');c.className='rc';const wa=w(ca),wb=w(cb);c.style.width=wa+'px';c.style.transitionDelay=i*30+'ms';
+    c.innerHTML=`<span class="rt"><span>${ca||' '}</span></span>`;el.appendChild(c);cells.push({c,rt:c.firstChild,ca,cb,wa,wb,i})}
+  el._symW=Math.max(...SYM.split('').map(w));m.remove();el._cells=cells;el._on=false}
+function set(el,on){if(el._on===on)return;el._on=on;
+  el._cells.forEach(({c,rt,ca,cb,wa,wb,i})=>{const from=on?ca:cb,to=on?cb:ca;c.style.width=(on?wb:wa)+'px';
+    if(from===to||RM){rt.innerHTML=`<span>${to||' '}</span>`;return}
+    const k=4+Math.floor(i/2)+Math.floor(Math.random()*3);const seq=[from||' '];for(let j=0;j<k;j++)seq.push(rnd());seq.push(to||' ');
+    const S=Math.max(wa,wb,el._symW);const e=x=>x==='<'?'&lt;':x==='>'?'&gt;':x==='&'?'&amp;':x;
+    rt.style.transition='none';rt.style.transform='translateX(0)';rt.innerHTML=seq.map(x=>`<span style="width:${S}px">${e(x)}</span>`).join('');
+    void rt.offsetWidth;const dur=520+k*55,delay=i*30;
+    rt.style.transition=`transform ${dur}ms cubic-bezier(.25,.8,.25,1) ${delay}ms`;rt.style.transform=`translateX(-${(seq.length-1)*S}px)`;
+    clearTimeout(rt._t);rt._t=setTimeout(()=>{rt.style.transition='none';rt.style.transform='none';rt.innerHTML=`<span>${to||' '}</span>`},dur+delay+40)})}
+const rolls=[...document.querySelectorAll('.roll')];
+(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>{rolls.forEach(build);
+  rolls.forEach(el=>{const host=el.closest('a,h1')||el;
+    host.addEventListener('mouseenter',()=>set(el,!el._on));
+    host.addEventListener('touchstart',()=>set(el,!el._on),{passive:true});
+    if(el.dataset.loop&&!RM){setTimeout(function loop(){if(!host.matches(':hover'))set(el,!el._on);setTimeout(loop,el._on?3800:4800)},2500)}});
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>rolls.forEach(el=>{const on=el._on;build(el);if(on){el._on=false;set(el,true)}}),200)})});
+})();
+// ===== custom cursor, magnetic buttons, card tilt =====
+(()=>{if(matchMedia('(hover:none),(pointer:coarse)').matches)return;const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const dot=document.querySelector('.cur-dot'),ring=document.querySelector('.cur-ring');let mx=0,my=0,rx=0,ry=0;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.transform=`translate(${mx}px,${my}px)`;document.body.classList.add('has-cur')});
+document.addEventListener('mouseleave',()=>document.body.classList.remove('has-cur'));
+(function tick(){rx+=(mx-rx)*.18;ry+=(my-ry)*.18;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(tick)})();
+document.addEventListener('mouseover',e=>{const t=e.target;ring.classList.toggle('view',!!t.closest('.card,.pv-next'));ring.classList.toggle('big',!t.closest('.card,.pv-next')&&!!t.closest('a,button,.tab,.ph-tab'))});
+if(RM)return;
+// magnetic
+document.addEventListener('mousemove',e=>{document.querySelectorAll('.menu-btn,.vbtn,.all,.tab').forEach(b=>{const r=b.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,d=Math.hypot(dx,dy),R=Math.max(r.width,r.height)*.9;
+  b.style.transform=d<R?`translate(${dx*.22}px,${dy*.28}px)`:'';b.style.transition=d<R?'transform .15s':'transform .5s cubic-bezier(.2,.7,.2,1)'})});
+// tilt + spotlight
+document.addEventListener('mousemove',e=>{const c=e.target.closest&&e.target.closest('.card');document.querySelectorAll('.card .cover').forEach(cv=>{if(!c||cv.closest('.card')!==c){cv.style.transform='';return}
+  const r=cv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;cv.style.transform=`perspective(900px) rotateY(${(px-.5)*7}deg) rotateX(${(.5-py)*7}deg)`;cv.style.setProperty('--mx',px*100+'%');cv.style.setProperty('--my',py*100+'%');
+  if(!cv.querySelector('.spot')){const s=document.createElement('span');s.className='spot';cv.appendChild(s)}})});
+})();
+
+// clocks
+const tick=()=>document.querySelectorAll('[data-tz]').forEach(b=>{try{b.textContent=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:b.dataset.tz})}catch(e){}});
+tick();setInterval(tick,15000);
+</script>
+</body>
+</html>
