@@ -300,6 +300,30 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
 .card:hover .cover .spot{opacity:1}
 @media (hover:none),(pointer:coarse){.cur-dot,.cur-ring{display:none}}
 
+
+/* testimonials */
+.tms{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.tm{position:relative;background:#fff;border:1px solid var(--line-l);border-radius:20px;padding:40px 40px 32px;display:flex;flex-direction:column;gap:18px;transition:transform .35s,box-shadow .35s}
+.tm:hover{transform:translateY(-4px);box-shadow:0 30px 60px -35px rgba(0,0,0,.3)}
+.tm-q{font-size:96px;line-height:.6;font-weight:600;height:40px;color:var(--ink)}
+.tm-ex{font-size:clamp(22px,2vw,28px);font-weight:600;letter-spacing:-.02em;line-height:1.25}
+.tm-full{display:none;font-size:16px;line-height:1.65;color:var(--mute-l)}
+.tm.open .tm-full{display:block;animation:tmin .4s ease}
+@keyframes tmin{from{opacity:0;transform:translateY(-6px)}}
+.tm-more{align-self:flex-start;background:none;border:0;padding:0;font:500 14px Inter,sans-serif;color:var(--ink);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.tm-who{display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:20px;border-top:1px solid var(--line-l);flex-wrap:wrap}
+.tm-who div{display:flex;flex-direction:column;gap:2px;flex:1;min-width:180px}
+.tm-who b{font-size:16px}.tm-who .mute{font-size:13px}
+.tm-av{width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:14px;font-weight:600;flex:none}
+.tm-rel{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:6px 10px;border:1px solid var(--line-l);border-radius:999px;color:var(--mute-l)}
+.tm-src{display:inline-block;margin-top:32px;font-size:15px;font-weight:500;text-underline-offset:4px}
+/* certifications */
+.certs ul{list-style:none;display:flex;flex-direction:column;margin-top:10px}
+.certs li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line-d);font-size:15px}
+.certs li .mute{font-size:13px;white-space:nowrap}
+.light .certs li{border-color:var(--line-l)}
+@media (max-width:900px){.tms{grid-template-columns:1fr}.tm{padding:28px}.certs li{flex-direction:column;gap:2px}}
+
 /* reveal */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
 .rv.in{opacity:1;transform:none}
@@ -327,8 +351,9 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
     <a href="#ai"><span>03</span>AI × UX</a>
     <a href="#experience"><span>04</span>Experience</a>
     <a href="#industries"><span>05</span>Industries</a>
-    <a href="#about"><span>06</span>About</a>
-    <a href="#contact"><span>07</span>Contact</a>
+    <a href="#testimonials"><span>06</span>Testimonials</a>
+    <a href="#about"><span>07</span>About</a>
+    <a href="#contact"><span>08</span>Contact</a>
   </nav>
   <div class="mute" style="font-size:14px">Varna, Bulgaria · drago.krasimirov.dimitrov@gmail.com</div>
 </div>
@@ -475,15 +500,22 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
   </div>
 </section>
 
-<section class="light wrap" id="about">
+<section class="light wrap" id="testimonials">
+  <div class="sh rv"><div><div class="num mute">// 06</div><h2>What people say</h2></div><div class="bg mute">Recommendations</div></div>
+  <div class="tms"><article class="tm rv"><div class="tm-q">“</div><p class="tm-ex">Dragomir is an outstanding UX Consultant!</p><p class="tm-full">Dragomir is an outstanding UX Consultant! Drago supported us in our redesign and rebranding project as an UX Consultant. With his deep UX expertise and ability to adapt it to our specific requirements and target audience, he made a key contribution to the project&#x27;s success in consulting, coordination, and execution. He&#x27;s a strong communicator and great team player - I&#x27;d gladly work with him again and can strongly recommend him to anyone looking for outstanding UX expertise.</p><button class="tm-more" aria-expanded="false">Read full recommendation ↓</button><div class="tm-who"><span class="tm-av">JS</span><div><b>Jeanine Schneider</b><span class="mute">Digital Commerce Executive · ex-Senior Head of Digital (Snipes) &amp; CMO</span></div><span class="tm-rel">Client · 2025</span></div></article><article class="tm rv"><div class="tm-q">“</div><p class="tm-ex">One of the hidden gems you always look for as a hiring manager.</p><p class="tm-full">Dragomir is exceptionally professional in many ways. It&#x27;s one of the hidden gems you always look for as a hiring manager. I&#x27;m proud to be able to hire him. Dragomir mixes the ability to steady and hard-working deliver at a very high quality while still working on self-improvement plans. What is more unique is that, at the same time, he has excellent communication, negotiation, and client-facing skills. Able to read the context and adapt a lot. Plus, he has always maintained good team relationships and has shown himself as an engagement team leader and a great team player. His previous experience gave him good entrepreneurship skills. Despite being shy, Dragomir is a true high-league player, my recommendation.</p><button class="tm-more" aria-expanded="false">Read full recommendation ↓</button><div class="tm-who"><span class="tm-av">AK</span><div><b>Artem Karpenko</b><span class="mute">Operational excellence · Change management · EMBA</span></div><span class="tm-rel">Managed Dragomir directly · 2023</span></div></article><article class="tm rv"><div class="tm-q">“</div><p class="tm-ex">I would confidently recommend Dragomir to any design or product team.</p><p class="tm-full">Throughout our time working together at Astound, I saw first hand Dragomir&#x27;s deep understanding of user design principles and excellent collaboration skills. His strong visual design proficiency and ability to quickly iterate through multiple complex design solutions, allowed us to continually deliver high quality work to our clients. Most importantly, Dragomir is an all-around great teammate, who I thoroughly enjoyed collaborating with. He works hard to support everyone on the team and always puts a smile on our faces. I would confidently recommend Dragomir to any design or product team.</p><button class="tm-more" aria-expanded="false">Read full recommendation ↓</button><div class="tm-who"><span class="tm-av">CE</span><div><b>Colm Eccles</b><span class="mute">Senior Product Designer (Ex-Meta)</span></div><span class="tm-rel">Worked on the same team · 2023</span></div></article><article class="tm rv"><div class="tm-q">“</div><p class="tm-ex">Helped us deliver significantly more scope within a tight budget.</p><p class="tm-full">Dragomir brought valuable ideas to the table and chose smart places to take creative risks that helped advance the team&#x27;s thinking. He puts his heart into his work, seeks feedback, and is graceful when challenging ideas. He&#x27;s got an awesome sense of humor that made collaborating feel effortless. He&#x27;s organized, efficient, and great with clients. He&#x27;s a strong communicator with a great eye for design. I appreciated his attention to detail and use of modern approaches like components, auto layouts, and rapid prototyping. He builds efficient and clean files that streamlined page creation and helped us deliver significantly more scope within a tight budget. He&#x27;s the kind of guy you want on your team.</p><button class="tm-more" aria-expanded="false">Read full recommendation ↓</button><div class="tm-who"><span class="tm-av">SS</span><div><b>Scott Springer</b><span class="mute">Strategic Design Thinker · Team Leader</span></div><span class="tm-rel">Worked on the same team · 2023</span></div></article></div>
+  <a class="tm-src mute" href="https://www.linkedin.com/in/drago-krasimirov-dimitrov/details/recommendations/">All recommendations on LinkedIn ↗</a>
+</section>
+
+<section class="dark wrap" id="about">
   <div class="about">
     <img class="rv" src="portrait3.jpg" alt="Drago Dimitrov">
     <div class="ab rv">
-      <div class="ab-top"><span class="num mute">// 06</span><span class="bg mute">About me</span></div>
+      <div class="ab-top"><span class="num mute">// 07</span><span class="bg mute">About me</span></div>
       <h2>Hi, I'm Drago.</h2>
       <p>UX Design Team Lead at Astound Commerce, based in Varna, Bulgaria. For me UX isn't only work — it's a way of thinking. Every project is a chance to learn something new and to improve things for the people who use them.</p>
       <p>I care about precision, quality execution and teams where responsibility is shared.</p>
       <div class="chips"><span>Salesforce Certified</span><span>Figma</span><span>Prototyping</span><span>UX Audits</span><span>Bulgarian · English</span></div>
+      <div class="certs"><div class="cap mute">CERTIFICATIONS</div><ul><li><b>Salesforce Certified Associate</b><span class="mute">Salesforce · 2024</span></li><li><b>Accessibility for UX Designers (WCAG 2.2)</b><span class="mute">Udemy · 2025</span></li><li><b>Headless at Shopify for Business Consultants</b><span class="mute">Shopify · 2025</span></li><li><b>Introduction to Web Accessibility</b><span class="mute">W3C · edX · 2021</span></li><li><b>Web Accessibility</b><span class="mute">Google · Udacity · 2020</span></li></ul></div>
       <div id="contact" style="margin-top:8px">
         <div class="cap mute">FOR WORK INQUIRIES</div>
         <a class="mail" href="mailto:drago.krasimirov.dimitrov@gmail.com">drago.krasimirov.dimitrov@gmail.com</a>
@@ -502,7 +534,7 @@ body.has-cur .cur-dot,body.has-cur .cur-ring{opacity:1}
 <main id="view" hidden></main>
 <div class="lb" id="lb" hidden><button class="lb-x" aria-label="Close">✕</button><img alt=""></div>
 
-<footer class="dark ftr">
+<footer class="light ftr">
   <a class="big" href="mailto:drago.krasimirov.dimitrov@gmail.com"><h2 class="rv">Let's talk.</h2></a>
   <div class="ftr-b mute"><span>© 2026 Dragomir Dimitrov</span><span><a href="https://www.linkedin.com/in/drago-krasimirov-dimitrov">LinkedIn</a><a href="#" onclick="event.preventDefault();scrollTo({top:0,behavior:'smooth'})">Back to top ↑</a></span></div>
 </footer>
@@ -635,6 +667,8 @@ document.addEventListener('mousemove',e=>{const c=e.target.closest&&e.target.clo
   if(!cv.querySelector('.spot')){const s=document.createElement('span');s.className='spot';cv.appendChild(s)}})});
 })();
 
+// testimonials expand
+document.querySelectorAll('.tm-more').forEach(b=>b.onclick=()=>{const t=b.closest('.tm'),o=t.classList.toggle('open');b.setAttribute('aria-expanded',o);b.textContent=o?'Show less ↑':'Read full recommendation ↓'});
 // clocks
 const tick=()=>document.querySelectorAll('[data-tz]').forEach(b=>{try{b.textContent=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:b.dataset.tz})}catch(e){}});
 tick();setInterval(tick,15000);
